@@ -58,19 +58,27 @@ dim(subject_merge)
 dim(y_merge_label)
 dim(x_merge)
 
-tidy_data <- bind_cols(subject_merge, y_merge_label, x_merge)
+
+tidydata <- bind_cols(subject_merge, y_merge_label, x_merge)
 
 
 # 5. tidy data ---------------------------------------------------
 
-tidydata_long <- tidy_data %>% 
+tidydata_long <- tidydata %>% 
           select(subject, activity, contains(c("mean()","std()"))) %>% 
           gather(features, reading, -c(subject, activity)) %>% 
           separate(col = features, into = c("feature", "measurement", "direction"), sep = "-") %>% 
           mutate(measurement = case_when(measurement == "mean()" ~ "mean", 
                                          measurement == "std()" ~ "std"))
 
-tidydata_wide_avg <-  tidy_data %>% 
+tidydata_wide_avg <-  tidydata %>% 
           select(subject, activity, contains(c("mean()","std()"))) %>% 
           group_by(subject, activity) %>% 
           summarise(across(1:66, mean))
+
+
+# 6. Write files ----------------------------------------------------------
+
+write.csv(tidy_data, "tidy_data.csv")
+write.csv(tidydata_long, "tidydata_long.csv")
+write.csv(tidydata_wide_avg, "tidydata_wide_avg.csv")
