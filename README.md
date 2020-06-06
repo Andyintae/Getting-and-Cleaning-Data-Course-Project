@@ -20,27 +20,35 @@ http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartpho
 
 ## run_analysis.R
 
-1. Load package 
+### 1. Load package 
  - You need packages 'dplyr 1.0.0' and 'tidyr'
-2. Create and Set work directory 
+
+### 2. Create and Set work directory 
  - make a new directory if there is no ditectory named "project"
-3. Download and unzip files 
+
+### 3. Download and unzip files 
  - download data from web and unzip the file
-4. Read and Merge data 
-  4-1. subject 
-    - read train and test dataset of subject and bind them
-    - attach colnames
-  4-2. y
-    - read train and test dataset of y and bind them
-    - read activity_labels file and join with y
-  4-3. x
-    - read train and test dataset of x and bind them
-    - read features dataset and bind the second column of it as the colnames of x dataset
-  4-4. Merge 
-    - check the number of rows of subject, x and y dataset
-    - bind those dataset as tidydata
-5. tidy data
+
+### 4. Read and Merge data 
+4.1 subject 
+  - read train and test dataset of subject and bind them
+  - attach colnames
+  
+4.2. y
+ - read train and test dataset of y and bind them
+ - read activity_labels file and join with y
+ 
+4.3. x
+ - read train and test dataset of x and bind them
+ - read features dataset and bind the second column of it as the colnames of x dataset
+ 
+4.4. Merge 
+ - check the number of rows of subject, x and y dataset
+ - bind those dataset as tidydata
+ 
+### 5. tidy data
  - make a lone-form dataset
  - make a wide-form dataset (average of each variable for each activity and each subject)
-6. Write files
+
+### 6. Write files
  - write to csv files
