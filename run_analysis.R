@@ -1,10 +1,10 @@
 ## Run Analysis ##
 
 
-
 # 1. Load package ------------------------------------------------------------
 
-library(tidyverse)
+library(dplyr)
+library(tidyr)
 
 
 # 2. Create and Set work directory ------------------------------------------------------
@@ -54,20 +54,23 @@ features          <- read.table(paste0(dir,"/features.txt"))
 colnames(x_merge) <- features[,2]
 
  # 4-4. Merge 
-dim(subject_mrge)
+dim(subject_merge)
 dim(y_merge_label)
 dim(x_merge)
 
-merged <- bind_cols(subject_merge, y_merge_label, x_merge)
-
-view(merged)
+tidy_data <- bind_cols(subject_merge, y_merge_label, x_merge)
 
 
 # 5. tidy data ---------------------------------------------------
 
-tidy_data <- merged %>% 
+tidydata_long <- tidy_data %>% 
           select(subject, activity, contains(c("mean()","std()"))) %>% 
-          gather(features, value, -c(subject, activity)) %>% 
-          separate(col = features, into = c("feature", "descriptive", "direction"), sep = "-")
+          gather(features, reading, -c(subject, activity)) %>% 
+          separate(col = features, into = c("feature", "measurement", "direction"), sep = "-") %>% 
+          mutate(measurement = case_when(measurement == "mean()" ~ "mean", 
+                                         measurement == "std()" ~ "std"))
 
-
+tidydata_wide_avg <-  tidy_data %>% 
+          select(subject, activity, contains(c("mean()","std()"))) %>% 
+          group_by(subject, activity) %>% 
+          summarise(across(1:66, mean))
